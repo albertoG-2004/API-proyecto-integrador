@@ -1,0 +1,9 @@
+dependencies:
+  - nodejs
+  - npm
+
+commands:
+  - cd api1/Api1-PIWEB
+  - npm install
+  - npm run tsc
+  - npm start
