@@ -1,17 +1,25 @@
 import monitoring from "../models/monitoringModel.js";
 import { createIdService } from "../services/createIdService.js";
+import { getDate, getTime } from "../services/getDateService.js";
 
 export const registerMonitoring = async(req, res) => {
     const data = req.body;
-
+    
     try {
         const id = await createIdService();
+        const temp = Number(data.temperature);
+        const humi = Number(data.humidity);
+        const weight = Number(data.weight);
+        const date = await getDate();
+        const time = await getTime();
+
         const newMonitoring = new monitoring({
             id: id,
-            date: new Date(data.date),
-            temperature: data.temperature,
-            humidity: data.humidity,
-            weight: data.weight
+            date: date,
+            time: time,
+            temperature: temp,
+            humidity: humi,
+            weight: weight
         });
         await newMonitoring.validate();
         await newMonitoring.save();
@@ -19,6 +27,7 @@ export const registerMonitoring = async(req, res) => {
             status: "success",
             data: {
                 date: newMonitoring.date,
+                time: newMonitoring.time,
                 temperature: newMonitoring.temperature,
                 humidity: newMonitoring.humidity,
                 weight: newMonitoring.weight
@@ -45,7 +54,7 @@ export const findAllByDate = async(req, res) => {
     const date = req.params;
 
     try {
-        const monitorins = await banana.find({
+        const monitorins = await monitoring.find({
             date
         });
 

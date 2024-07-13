@@ -130,3 +130,52 @@ export const findUser = async(req, res) => {
         console.log("Error: ", error);
     }
 }
+
+export const updateUser = async(req, res) => {
+    const data = req.body;
+
+    if(!verifyPhone(data.phone_number)){
+        return res.status(400).json({
+            status: "error",
+            message: "Invalid cellphone number",
+            error: "The cellphone number must be a 10-digit number not starting with 0"
+        });
+    }
+    if(!verifyPassword(data.password)){
+        return res.status(400).json({
+            status: "error",
+            message: "Invalid password",
+            error: "Must contain at least 8 characters"
+        });
+    }
+    try {
+        const pass = await encryptPassword(data.password);
+        const response = await user.updateOne({
+            phone_number: data.phone_number
+        },{
+            $set:{
+                password: pass
+            }
+        });
+
+        if(response.modifiedCount != 0){
+            return res.status(200).json({
+                status: "success",
+                message: "User password updated successfully"
+            });
+        }else{
+            return res.status(404).json({
+                status: "error",
+                message: "User not found or no changes made",
+                error: "No user found with the provided phone number or the password is the same as the current one"
+            });
+        }
+    } catch (error) {
+        res.status(204).json({
+            status: "error",
+            data: "An error has ocurred",
+            messages: error
+        });
+        console.log("Error: ", error);
+    }
+}

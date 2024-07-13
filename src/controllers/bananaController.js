@@ -1,15 +1,34 @@
 import banana from "../models/bananaModel.js";
 import { createIdService } from "../services/createIdService.js";
+import { verifyWord } from "../services/verifyWordService.js";
+import { getDate, getTime } from "../services/getDateService.js";
 
 export const registerBanana = async(req, res) => {
     const data = req.body;
-
+    
+    if(!verifyWord(data.color)){
+        return res.status(400).json({
+            status: "error",
+            message: "Invalid color",
+            error: "The color must not contain special characters"
+        });
+    }
+    if(!verifyWord(data.classification)){
+        return res.status(400).json({
+            status: "error",
+            message: "Invalid classification",
+            error: "The classification must not contain special characters"
+        });
+    }
     try {
         const id = await createIdService();
-
+        const date = await getDate();
+        const time = await getTime();
+        
         const newBanana = new banana({
             id: id,
-            date: new Date(data.date),
+            date: date,
+            time: time,
             color: data.color,
             classification: data.classification
         })
@@ -20,6 +39,7 @@ export const registerBanana = async(req, res) => {
             status: "success",
             data: {
                 date: newBanana.date,
+                time: newBanana.time,
                 color: newBanana.color,
                 classification: newBanana.classification
             },
