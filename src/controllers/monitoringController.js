@@ -54,11 +54,11 @@ export const findAllByDate = async(req, res) => {
     const date = req.params;
 
     try {
-        const monitorins = await monitoring.find({
+        const monitorings = await monitoring.find({
             date
         });
 
-        if(!monitorins || monitorins.length == 0){
+        if(!monitorings || monitorings.length == 0){
             res.status(204).json({
                 status: "success",
                 message: "Data not found by condition"
@@ -66,7 +66,7 @@ export const findAllByDate = async(req, res) => {
         }else{
             res.status(200).json({
                 status: "success",
-                data: bananas
+                data: monitorings
             })
         }
     } catch (error) {

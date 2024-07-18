@@ -2,6 +2,7 @@ import banana from "../models/bananaModel.js";
 import { createIdService } from "../services/createIdService.js";
 import { verifyWord } from "../services/verifyWordService.js";
 import { getDate, getTime } from "../services/getDateService.js";
+import { sendData } from "../services/sendDataService.js";
 
 export const registerBanana = async(req, res) => {
     const data = req.body;
@@ -35,6 +36,7 @@ export const registerBanana = async(req, res) => {
 
         await newBanana.validate();
         await newBanana.save();
+        await sendData(newBanana);
         res.status(201).json({
             status: "success",
             data: {
@@ -72,7 +74,7 @@ export const findAllByDate = async(req, res) => {
 
         if(!bananas || bananas.length === 0){
             res.status(204).json({
-                status: "success",
+                status: "error",
                 message: "Data not found by condition"
             })
         }else{
