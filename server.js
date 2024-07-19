@@ -20,7 +20,7 @@ const sigOptions = {
 };
 const signale = new Signale(sigOptions);
 
-app.use(cors());
+app.use(cors({origin: "*"}));
 app.use(express.json());
 app.use(helmet.hidePoweredBy());
 
