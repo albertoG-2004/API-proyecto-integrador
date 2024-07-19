@@ -1,5 +1,5 @@
 import user from '../models/usersModel.js';
-import { conn } from "../connection/connection.js";
+import { conn, disconnect } from "../connection/connection.js";
 import { createIdService } from '../services/createIdService.js';
 import { verifyPhone } from '../services/verifyPhoneService.js';
 import { verifyWord } from '../services/verifyWordService.js';
@@ -88,6 +88,8 @@ export const registerUser = async(req, res) => {
             messages: error
         });
         console.log("Error: ", error);
+    } finally {
+        await disconnect();
     }
 }
 
@@ -133,6 +135,8 @@ export const findUser = async(req, res) => {
             messages: error
         });
         console.log("Error: ", error);
+    } finally {
+        await disconnect();
     }
 }
 
@@ -184,5 +188,7 @@ export const updateUser = async(req, res) => {
             messages: error
         });
         console.log("Error: ", error);
+    } finally {
+        await disconnect();
     }
 }

@@ -23,3 +23,18 @@ export const conn = async () => {
         console.error('Error connecting to MongoDB:', error);
     }
 };
+
+export const disconnect = async () => {
+    if (!isConnected) {
+        console.log('No active MongoDB connection to close');
+        return;
+    }
+
+    try {
+        await mongoose.disconnect();
+        isConnected = false;
+        console.log('Disconnected from MongoDB');
+    } catch (error) {
+        console.error('Error disconnecting from MongoDB:', error);
+    }
+};

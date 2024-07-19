@@ -1,5 +1,5 @@
 import banana from "../models/bananaModel.js";
-import { conn } from "../connection/connection.js";
+import { conn, disconnect } from "../connection/connection.js";
 import { createIdService } from "../services/createIdService.js";
 import { verifyWord } from "../services/verifyWordService.js";
 import { getDate, getTime } from "../services/getDateService.js";
@@ -64,6 +64,8 @@ export const registerBanana = async(req, res) => {
                 error: error.message
             });
         }
+    } finally {
+        await disconnect();
     }
 }
 
@@ -94,5 +96,7 @@ export const findAllByDate = async(req, res) => {
             message: "An error has ocurred while processing the request",
             error: error.message
         })
+    } finally {
+        await disconnect();
     }
 } 

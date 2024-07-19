@@ -6,7 +6,8 @@ const secretJWT = process.env.SECRET_WORD;
 
 const verifyJWT = (req, res, next) => {
     try {
-        const authHeader = req.get('Authorization');
+        const authHeader = req.headers.authorization;
+        console.log(authHeader);
         if (!authHeader) {
             return res.status(401).json({
                 status: "error",
@@ -14,8 +15,7 @@ const verifyJWT = (req, res, next) => {
             });
         }
 
-        const token = authHeader.split(' ')[1];
-        jwt.verify(token, secretJWT, (err, decoded) => {
+        jwt.verify(authHeader, secretJWT, (err, decoded) => {
             if (err) {
                 return res.status(401).json({
                     status: "error",
