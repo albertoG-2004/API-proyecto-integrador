@@ -1,4 +1,5 @@
 import user from '../models/usersModel.js';
+import { conn } from "../connection/connection.js";
 import { createIdService } from '../services/createIdService.js';
 import { verifyPhone } from '../services/verifyPhoneService.js';
 import { verifyWord } from '../services/verifyWordService.js';
@@ -53,6 +54,8 @@ export const registerUser = async(req, res) => {
         });
     }
     try {
+        await conn();
+
         const auxId = await createIdService();
         const pass = await encryptPassword(data.password);
 
@@ -92,6 +95,8 @@ export const findUser = async(req, res) => {
     const params = req.params;
      
     try {
+        await conn();
+
         const userFound = await user.findOne({
             phone_number: params.phone_number
         });
@@ -149,6 +154,8 @@ export const updateUser = async(req, res) => {
         });
     }
     try {
+        await conn();
+        
         const pass = await encryptPassword(data.password);
         const response = await user.updateOne({
             phone_number: data.phone_number

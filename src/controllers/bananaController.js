@@ -1,4 +1,5 @@
 import banana from "../models/bananaModel.js";
+import { conn } from "../connection/connection.js";
 import { createIdService } from "../services/createIdService.js";
 import { verifyWord } from "../services/verifyWordService.js";
 import { getDate, getTime } from "../services/getDateService.js";
@@ -22,6 +23,8 @@ export const registerBanana = async(req, res) => {
         });
     }
     try {
+        await conn();
+
         const id = await createIdService();
         const date = await getDate();
         const time = await getTime();
@@ -68,6 +71,8 @@ export const findAllByDate = async(req, res) => {
     const date = req.params;
 
     try {
+        await conn();
+        
         const bananas = await banana.find({
             date
         });

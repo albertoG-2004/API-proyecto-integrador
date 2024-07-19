@@ -1,4 +1,5 @@
 import monitoring from "../models/monitoringModel.js";
+import { conn } from "../connection/connection.js";
 import { createIdService } from "../services/createIdService.js";
 import { getDate, getTime } from "../services/getDateService.js";
 
@@ -6,6 +7,8 @@ export const registerMonitoring = async(req, res) => {
     const data = req.body;
     
     try {
+        await conn();
+        
         const id = await createIdService();
         const temp = Number(data.temperature);
         const humi = Number(data.humidity);
@@ -54,6 +57,8 @@ export const findAllByDate = async(req, res) => {
     const date = req.params;
 
     try {
+        await conn();
+        
         const monitorings = await monitoring.find({
             date
         });

@@ -1,7 +1,7 @@
 import express from 'express';
 import https from 'https';
 import fs from 'fs';
-import { conn } from './src/connection/connection.js';
+import rateLimit from 'express-rate-limit';
 import routesUser from './src/routes/userRoute.js';
 import routesBanana from './src/routes/bananaRoute.js';
 import routesMonitoring from './src/routes/monitoringRoute.js';
@@ -24,6 +24,16 @@ app.use(cors({origin: "*"}));
 app.use(express.json());
 app.use(helmet.hidePoweredBy());
 
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    keyGenerator: (req, res) => {
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      return ip ? ip.toString() : 'default';
+    }
+});
+
+app.use(limiter);
 app.use("/users", routesUser);
 app.use("/bananas", routesBanana);
 app.use("/monitorings", routesMonitoring);
@@ -36,4 +46,3 @@ const options = {
 https.createServer(options, app).listen(port, () => {
     signale.success("Server running in port: " + port);
 });
-conn();
