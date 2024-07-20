@@ -2,6 +2,7 @@ import monitoring from "../models/monitoringModel.js";
 import { conn, disconnect } from "../connection/connection.js";
 import { createIdService } from "../services/createIdService.js";
 import { getDate, getTime } from "../services/getDateService.js";
+import { sendDataMonitorings } from "../services/sendDataService.js";
 
 export const registerMonitoring = async(req, res) => {
     const data = req.body;
@@ -26,6 +27,7 @@ export const registerMonitoring = async(req, res) => {
         });
         await newMonitoring.validate();
         await newMonitoring.save();
+        await sendDataMonitorings(newMonitoring)
         res.status(201).json({
             status: "success",
             data: {

@@ -3,7 +3,7 @@ import { conn, disconnect } from "../connection/connection.js";
 import { createIdService } from "../services/createIdService.js";
 import { verifyWord } from "../services/verifyWordService.js";
 import { getDate, getTime } from "../services/getDateService.js";
-import { sendData } from "../services/sendDataService.js";
+import { sendDataBananas } from "../services/sendDataService.js";
 
 export const registerBanana = async(req, res) => {
     const data = req.body;
@@ -35,11 +35,11 @@ export const registerBanana = async(req, res) => {
             time: time,
             color: data.color,
             classification: data.classification
-        })
+        });
 
         await newBanana.validate();
         await newBanana.save();
-        await sendData(newBanana);
+        await sendDataBananas(newBanana);
         res.status(201).json({
             status: "success",
             data: {
