@@ -1,12 +1,20 @@
 import monitoring from "../models/monitoringModel.js";
 import { conn, disconnect } from "../connection/connection.js";
 import { createIdService } from "../services/createIdService.js";
+import { verifyWord } from "../services/verifyWordService.js";
 import { getDate, getTime } from "../services/getDateService.js";
 import { sendDataMonitorings } from "../services/sendDataService.js";
 
 export const registerMonitoring = async(req, res) => {
     const data = req.body;
     
+    if(!verifyWord(data.box)){
+        return res.status(400).json({
+            status: "error",
+            message: "Invalid box",
+            error: "The color must n"
+        });
+    }
     try {
         await conn();
         
@@ -19,6 +27,7 @@ export const registerMonitoring = async(req, res) => {
 
         const newMonitoring = new monitoring({
             id: id,
+            box: data.box,
             date: date,
             time: time,
             temperature: temp,
@@ -31,6 +40,7 @@ export const registerMonitoring = async(req, res) => {
         res.status(201).json({
             status: "success",
             data: {
+                box: newMonitoring.box,
                 date: newMonitoring.date,
                 time: newMonitoring.time,
                 temperature: newMonitoring.temperature,

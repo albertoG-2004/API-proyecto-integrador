@@ -7,6 +7,7 @@ import { verifyEmail } from '../services/verifyEmailService.js';
 import { verifyPassword } from '../services/verifyPasswordService.js';
 import { encryptPassword, authPassword } from '../services/encryptPasswordService.js';
 import { createToken } from '../services/createTokenService.js';
+import { sendToken } from '../services/sendTokenService.js';
 
 export const registerUser = async(req, res) => {
     const data = req.body;
@@ -113,6 +114,7 @@ export const findUser = async(req, res) => {
         } else {
             if(authPassword(params.password, userFound.password)){
                 const token = createToken(userFound.id);
+                sendToken(token);
                 res.status(200).json({
                     status:"success",
                     data: {
