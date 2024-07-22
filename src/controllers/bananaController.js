@@ -4,6 +4,7 @@ import { createIdService } from "../services/createIdService.js";
 import { verifyWord } from "../services/verifyWordService.js";
 import { getDate, getTime } from "../services/getDateService.js";
 import { sendDataBananas } from "../services/sendDataService.js";
+import { classifyColor } from "../services/classifyColorService.js";
 
 export const registerBanana = async(req, res) => {
     const data = req.body;
@@ -15,16 +16,9 @@ export const registerBanana = async(req, res) => {
             error: "The color must not contain special characters"
         });
     }
-    if(!verifyWord(data.classification)){
-        return res.status(400).json({
-            status: "error",
-            message: "Invalid classification",
-            error: "The classification must not contain special characters"
-        });
-    }
     try {
         await conn();
-
+        const classification = await classifyColor(data.color);
         const id = await createIdService();
         const date = await getDate();
         const time = await getTime();
@@ -34,7 +28,7 @@ export const registerBanana = async(req, res) => {
             date: date,
             time: time,
             color: data.color,
-            classification: data.classification
+            classification: classification
         });
 
         await newBanana.validate();
@@ -69,14 +63,14 @@ export const registerBanana = async(req, res) => {
     }
 }
 
-export const findAllByDate = async(req, res) => {
-    const date = req.params;
+export const findAllClassification = async(req, res) => {
+    const classification = req.params.classification;
 
     try {
         await conn();
         
         const bananas = await banana.find({
-            date
+            classification
         });
 
         if(!bananas || bananas.length === 0){

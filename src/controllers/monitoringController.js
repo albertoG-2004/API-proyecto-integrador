@@ -68,7 +68,7 @@ export const registerMonitoring = async(req, res) => {
 }
 
 export const findAllByDate = async(req, res) => {
-    const date = req.params;
+    const date = req.params.date;
 
     try {
         await conn();
