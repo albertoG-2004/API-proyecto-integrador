@@ -70,9 +70,9 @@ export const findAllClassification = async(req, res) => {
         await conn();
         
         const bananas = await banana.find({
-            classification
+            classification: classification
         });
-
+        console.log(bananas);
         if(!bananas || bananas.length === 0){
             res.status(204).json({
                 status: "error",
