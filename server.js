@@ -24,16 +24,16 @@ app.use(cors({origin: "*"}));
 app.use(express.json());
 app.use(helmet.hidePoweredBy());
 
-// const limiter = rateLimit({
-//     windowMs: 15 * 60 * 1000,
-//     max: 100,
-//     keyGenerator: (req, res) => {
-//       const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-//       return ip ? ip.toString() : 'default';
-//     }
-// });
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 150,
+    keyGenerator: (req, res) => {
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      return ip ? ip.toString() : 'default';
+    }
+});
 
-// app.use(limiter);
+app.use(limiter);
 app.use("/users", routesUser);
 app.use("/bananas", routesBanana);
 app.use("/monitorings", routesMonitoring);
