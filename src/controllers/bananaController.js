@@ -85,6 +85,7 @@ export const findAllClassification = async(req, res) => {
             })
         }
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: "error",
             message: "An error has ocurred while processing the request",
