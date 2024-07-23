@@ -63,7 +63,7 @@ export const registerBanana = async(req, res) => {
     }
 }
 
-export const findAllClassification = async(req, res) => {
+export const findAllClassification = async (req, res) => {
     const classification = req.params.classification;
 
     try {
@@ -72,26 +72,26 @@ export const findAllClassification = async(req, res) => {
         const bananas = await banana.find({
             classification: classification
         });
-        console.log(bananas);
-        if(!bananas || bananas.length === 0){
+        
+        if (!bananas || bananas.length === 0) {
             res.status(204).json({
                 status: "error",
                 message: "Data not found by condition"
-            })
-        }else{
+            });
+        } else {
             res.status(200).json({
                 status: "success",
                 data: bananas
-            })
+            });
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({
             status: "error",
-            message: "An error has ocurred while processing the request",
+            message: "An error has occurred while processing the request",
             error: error.message
-        })
+        });
     } finally {
         await disconnect();
     }
-} 
+};

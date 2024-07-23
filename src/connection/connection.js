@@ -12,10 +12,7 @@ export const conn = async () => {
     }
 
     try {
-        await mongoose.connect(process.env.MONGO_URI_ATLAS, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(process.env.MONGO_URI_ATLAS);
         isConnected = true;
         console.log('Connected to MongoDB');
     } catch (error) {
