@@ -64,19 +64,15 @@ export const registerBanana = async(req, res) => {
 }
 
 export const findAllClassification = async (req, res) => {
-    const classification = req.params.classification;
-
     try {
         await conn();
         
-        const bananas = await banana.find({
-            classification: classification
-        });
+        const bananas = await banana.find();
         
         if (!bananas || bananas.length === 0) {
             res.status(204).json({
                 status: "error",
-                message: "Data not found by condition"
+                message: "Data not found"
             });
         } else {
             res.status(200).json({
