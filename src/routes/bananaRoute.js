@@ -5,6 +5,6 @@ import verifyJWT from "../middlewares/authMiddleware.js";
 const routesBanana = Router();
 
 routesBanana.post("/", verifyJWT, registerBanana);
-routesBanana.get("/:classification", verifyJWT, findAllClassification);
+routesBanana.get("/", verifyJWT, findAllClassification);
 
 export default routesBanana;
