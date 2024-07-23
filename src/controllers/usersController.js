@@ -114,7 +114,7 @@ export const findUser = async(req, res) => {
         } else {
             if(authPassword(params.password, userFound.password)){
                 const token = createToken(userFound.id);
-                sendToken(token);
+                await sendToken(token);
                 res.status(200).json({
                     status:"success",
                     data: {
