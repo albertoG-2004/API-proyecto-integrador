@@ -9,7 +9,7 @@ export const sendToken = async(token) => {
     try {
         const conn = await amqplib.connect(url);
         const channel = await conn.createChannel();
-        await channel.assertExchange(exch, 'direct', { durable: true });
+        await channel.assertExchange(exch, 'topic', { durable: true });
         const message = await channel.publish(exch, '', Buffer.from(JSON.stringify(token)));
         console.log('Token published:', message);
         await channel.close();
