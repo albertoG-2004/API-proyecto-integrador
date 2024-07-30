@@ -7,21 +7,21 @@ import { sendDataMonitorings } from "../services/sendDataService.js";
 
 export const registerMonitoring = async(req, res) => {
     const data = req.body;
-    
+    console.log(data);
     if(!verifyWord(data.box)){
         return res.status(400).json({
             status: "error",
             message: "Invalid box",
-            error: "The color must n"
+            error: "The box must be Maduros or Verdes"
         });
     }
     try {
         await conn();
         
         const id = await createIdService();
-        const temp = Number(data.temperature);
-        const humi = Number(data.humidity);
-        const weight = Number(data.weight);
+        const temp = data.temperature;
+        const humi = data.humidity;
+        const weight = data.weight;
         const date = await getDate();
         const time = await getTime();
 
@@ -34,6 +34,7 @@ export const registerMonitoring = async(req, res) => {
             humidity: humi,
             weight: weight
         });
+        console.log(newMonitoring);
         await newMonitoring.validate();
         await newMonitoring.save();
         await sendDataMonitorings(newMonitoring)

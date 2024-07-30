@@ -7,7 +7,6 @@ const secretJWT = process.env.SECRET_WORD;
 const verifyJWT = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
-        console.log(authHeader);
         if (!authHeader) {
             return res.status(401).json({
                 status: "error",

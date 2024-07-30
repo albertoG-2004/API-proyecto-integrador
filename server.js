@@ -26,7 +26,7 @@ app.use(helmet.hidePoweredBy());
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 150,
+    max: 200,
     keyGenerator: (req, res) => {
       const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       return ip ? ip.toString() : 'default';
