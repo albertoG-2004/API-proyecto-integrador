@@ -7,7 +7,6 @@ import { sendDataMonitorings } from "../services/sendDataService.js";
 
 export const registerMonitoring = async(req, res) => {
     const data = req.body;
-    console.log(data);
     if(!verifyWord(data.box)){
         return res.status(400).json({
             status: "error",
